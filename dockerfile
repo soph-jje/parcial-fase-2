@@ -26,10 +26,11 @@ RUN install2.r --error \
     && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
 ## copiar los contenidos del directorio donde se encuentra el codigo al directorio  /srv/shiny-server/shiny/
-COPY . /srv/shiny-server/shiny/
+COPY . /srv/shiny-server/
 # exponer el puerto
 EXPOSE 3838
-# moverse al directorio
-WORKDIR /srv/shiny-server/shiny
+
+RUN sudo chown -R shiny:shiny /srv/shiny-server
+
 # run app
-CMD R -e 'shiny::runApp("app.R", port = 3838, host = "0.0.0.0")'
+CMD ["/usr/bin/shiny-server.sh"]
